@@ -2,12 +2,15 @@
 .formContainer {
   padding-top: 20px;
   padding-bottom: 5px;
+  padding-left: 20px;
+  padding-right: 20px;
   height: 60px;
-  border: 1px solid red;
+  text-align: left;
 }
 .tableContainer {
   height: calc(100vh - 200px);
-  border: 1px solid blue;
+  padding-left: 20px;
+  padding-right: 20px;
 }
 </style>
 <template>
@@ -23,7 +26,7 @@
                     v-model="form.procOrder"
                     :fetch-suggestions="querySearch"
                     placeholder="请输入订单编号"
-                    @select="handleSelect"
+                    
                 ></el-autocomplete>
             </el-form-item>
             <el-form-item label="内向交货单:">
@@ -32,27 +35,29 @@
                     v-model="form.internalOrder"
                     :fetch-suggestions="queryInternalOrder"
                     placeholder="请输入订单编号"
-                    @select="handleSelect"
+                   
                 ></el-autocomplete>
             </el-form-item>
             <el-form-item>
                 <el-button-group>
-                    <el-button type="primary" plain icon="el-icon-refresh" @click="onSubmit">查询</el-button>
-                    <el-button type="primary" icon="el-icon-circle-check-outline" plain >保存</el-button>
-                    <el-button type="primary" icon="el-icon-circle-plus-outline" plain >保存</el-button>
-                    <el-button type="primary" icon="el-icon-delete" plain >删除</el-button>
+                    <el-button type="primary" plain icon="el-icon-refresh" @click="query">查询</el-button>
+                    <el-button type="primary" icon="el-icon-circle-check-outline" plain  @click="saveData">保存</el-button>
+                    <el-button type="primary" @click="addNew" icon="el-icon-circle-plus-outline" plain >新增</el-button>
+                    <el-button type="primary" icon="el-icon-delete" plain  @click="handleDelete">删除</el-button>
                 </el-button-group>
             </el-form-item>
         </el-form>
     </div>
     <div class="tableContainer">
-        <ag-grid-vue style="width: 100%; height: 100%; text-align: left" class="ag-theme-balham"
+       <ag-grid-vue style="width: 100%; height: 100%; text-align: left" class="ag-theme-balham"
              :gridOptions="gridOptions"
              :columnDefs="colDefs"
              :rowData="rowData"
              :enableSorting="true"
              :enableColResize="true"
              :gridReady="onGridReady"
+             rowSelection="multiple"
+             :cellValueChanged="cellValueChanged"
             >
         </ag-grid-vue>
     </div>
@@ -62,11 +67,14 @@
 import { AgGridVue } from "ag-grid-vue";
 export default {
   components: {
-    "ag-grid-vue": AgGridVue
+    AgGridVue
   },
   data() {
     return {
-      rowData: [],
+      params: {},
+      rowData: Object.assign([], this.$store.state.qualityData),
+      updatedRowData: [],
+      formDuty: true,
       form: {
         procOrder: "",
         internalOrder: "",
@@ -74,13 +82,29 @@ export default {
       },
       colDefs: [
         {
+          headerName: "工厂",
+          field: "plant",
+          width: 100,
+          editable: false,
+          checkboxSelection: true
+        },
+        {
+          headerName: "采购订单",
+          field: "procOrder",
+          width: 150,
+          editable: false
+        },
+        {
+          headerName: "内向交货单",
+          field: "internalOrder",
+          width: 150,
+          editable: false
+        },
+        {
           headerName: "检验批",
           field: "QC_No",
           width: 200,
-          editable: true,
-          checkboxSelection: false,
-          parent: this,
-          checkboxSelection: true
+          editable: true
         },
         {
           headerName: "物料号",
@@ -128,7 +152,7 @@ export default {
           headerName: "缺陷数量",
           field: "Defect_Num",
           width: 200,
-          editable: false
+          editable: true
         },
         {
           headerName: "支持文件",
@@ -138,33 +162,52 @@ export default {
         }
       ],
       gridOptions: {},
-      procOrders: [
-        { value: "proc0001", text: "proc0001" },
-        { value: "proc0002", text: "proc0002" },
-        { value: "proc0003", text: "proc0003" },
-        { value: "proc0004", text: "proc0004" },
-        { value: "proc0005", text: "proc0005" },
-        { value: "proc0006", text: "proc0006" },
-        { value: "proc0007", text: "proc0007" },
-        { value: "proc0008", text: "proc0008" },
-        { value: "proc0009", text: "proc0009" },
-        { value: "proc00010", text: "proc00010" }
-      ],
-      internalOrders: [
-        { value: "proc0001", text: "proc0001" },
-        { value: "proc0002", text: "proc0002" },
-        { value: "proc0003", text: "proc0003" },
-        { value: "proc0004", text: "proc0004" },
-        { value: "proc0005", text: "proc0005" },
-        { value: "proc0006", text: "proc0006" },
-        { value: "proc0007", text: "proc0007" },
-        { value: "proc0008", text: "proc0008" },
-        { value: "proc0009", text: "proc0009" },
-        { value: "proc00010", text: "proc00010" }
-      ]
+      procOrders: this.$store.state.procOrders,
+      internalOrders: this.$store.state.internalOrders
     };
   },
   methods: {
+    query() {},
+    handleDelete() {
+      const selectedRows = this.getSelectedRows();
+      if (null == selectedRows || selectedRows.length <= 0) {
+        this.$message.error("错了哦，没有选中的数据");
+        return;
+      }
+      let newRowData = [];
+      selectedRows.forEach(element => {
+        newRowData = this.rowData.filter(row => {
+          return row.id !== element.id;
+        });
+      });
+      this.rowData = newRowData;
+    },
+    saveData() {
+      this.$store.commit("updateStore", {
+        key: "qualityData",
+        value: this.rowData
+      });
+      this.formDuty = true;
+    },
+    addNew() {
+      this.rowData.push({
+        id: new Date().getTime(),
+        plant: this.params.plant,
+        procOrder: this.params.procOrder,
+        internalOrder: this.params.internalOrder,
+        QC_No: "",
+        MaterialPN: "",
+        QC_PN: "",
+        QC_Desc: "",
+        QC_Result: "",
+        Result: "",
+        Group_Code: "",
+        Mani_Group: "",
+        Defect_Num: "",
+        Supportings: ""
+      });
+      this.formDuty = false;
+    },
     queryInternalOrder(queryString, cb) {
       var internalOrders = this.internalOrders;
       var results = queryString
@@ -185,25 +228,35 @@ export default {
       // 调用 callback 返回建议列表的数据
       cb(results);
     },
-    handleSelect(item) {
-      console.log(item);
-    },
     onGridReady(params) {
       this.gridApi = params.api;
       this.columnApi = params.columnApi;
+    },
+    cellValueChanged(param) {
+      let existAlready = false;
+      for (let i = 0; i < this.updatedRowData.length; i++) {
+        if (this.updatedRowData[i].id === param.data.id) {
+          this.updatedRowData[i] = param.data;
+          existAlready = true;
+          break;
+        }
+      }
+      if (!existAlready) {
+        this.updatedRowData.push(param.data);
+      }
     },
     getSelectedRows() {
       const selectedNodes = this.gridApi.getSelectedNodes();
       const selectedData = selectedNodes.map(node => node.data);
       return selectedData;
-    },
-    onSubmit() {}
+    }
   },
   beforeMount() {
     const params = this.$route.params;
     this.form.plant = params.plant;
     this.form.internalOrder = params.internalOrder;
     this.form.procOrder = params.procOrder;
+    this.params = params;
   }
 };
 </script>

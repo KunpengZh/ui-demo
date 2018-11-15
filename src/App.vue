@@ -34,6 +34,13 @@ export default {
     },
     handleUserLogin() {
       this.showLogin = false;
+      this.$store.state.user.isLoggedIn = true;
+      this.$store.commit("updateStore", {
+        key: "user",
+        value: {
+          isLoggedIn: true
+        }
+      });
       this.$router.push("/dashboard");
     },
     handleCancelLogin() {

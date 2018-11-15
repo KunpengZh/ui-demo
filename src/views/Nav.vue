@@ -6,32 +6,53 @@
     </div>
     <div class="menu">
         <ul>
-            <li class="cursorhand">采购管理</li>
-            <li class="cursorhand" >质量管理</li>
-            <li class="cursorhand" >供应商管理</li>
-            <li class="cursorhand" >需求计划管理</li>
-            <li class="cursorhand"  @click="showLogin">用户登陆</li>
+            <li v-if="showMenu" class="colorGray"  >采购管理</li>
+            <li v-if="showMenu" class="cursorhand" @click="toDashboard" >质量管理</li>
+            <li v-if="showMenu" class="colorGray"  >供应商管理</li>
+            <li v-if="showMenu" class="colorGray"  >需求计划管理</li>
+            <li v-if="!showMenu" class="cursorhand"  @click="showLogin">用户登陆</li>
+            <li v-if="showMenu" class="cursorhand" @click="logou" >退出</li>
         </ul>
     </div>
 </div>
 </template>
 <script>
 export default {
+  data() {
+    return {
+      showLoginWindow: false
+    };
+  },
+  computed: {
+    showMenu() {
+      return this.$store.state.user.isLoggedIn;
+    }
+  },
   methods: {
-    data() {
-      return {
-        showLoginWindow: false
-      };
+    toDashboard() {
+      this.$router.push("/dashboard");
     },
     showLogin() {
       let fullScreenLoading = document.getElementById("fullScreenLoading");
       fullScreenLoading.style.display = "";
       this.$emit("showLoginWindow");
+    },
+    logou() {
+      this.$store.commit("updateStore", {
+        key: "user",
+        value: {
+          isLoggedIn: false
+        }
+      });
+      this.$router.push("/");
     }
   }
 };
 </script>
 <style scoped>
+.colorGray {
+  color: gray;
+}
 .navContainer {
   position: fixed;
   top: 0;

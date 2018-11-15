@@ -7,7 +7,7 @@
             <span class="loginTitle">智能供应链系统登陆</span>
         </div>
         <div class="loginForm">
-            <el-input placeholder="手机号码或邮箱" v-model="userId" style="margin-bottom:10px;" clearable="true">
+            <el-input placeholder="手机号码或邮箱" v-model="userId" style="margin-bottom:10px;" :clearable="true">
                 <img slot="prepend" src="../assets/images/icons/user.png" height="30px">
                 <!-- <el-button slot="prepend" icon="el-icon-search"></el-button> -->
             </el-input>

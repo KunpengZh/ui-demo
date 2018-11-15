@@ -19,5 +19,10 @@ Vue.config.productionTip = false;
 new Vue({
   router,
   store,
-  render: h => h(App)
+  render: h => h(App),
+  created() {
+    if (!this.$store.state.user.isLoggedIn) {
+      this.$router.push("/");
+    }
+  }
 }).$mount("#app");
