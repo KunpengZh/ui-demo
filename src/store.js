@@ -42,7 +42,8 @@ export default new Vuex.Store({
         trigger: "axis"
       },
       legend: {
-        data: ["2017", "2018"]
+        data: ["2017", "2018"],
+        show: false
       },
       toolbox: {
         show: true,
@@ -103,7 +104,9 @@ export default new Vuex.Store({
         formatter: "{a} <br/>{b}: {c} ({d}%)"
       },
       legend: {
+        show: false,
         orient: "vertical",
+        itemMarginLeft: 100,
         x: "right",
         data: ["供应1", "供应2", "供应3", "供应4", "供应5", "供应6", "供应7", "供应8", "供应9", "供应10"]
       },
@@ -113,7 +116,6 @@ export default new Vuex.Store({
           type: "pie",
           selectedMode: "single",
           radius: [0, "30%"],
-
           label: {
             normal: {
               position: "inner"
@@ -149,7 +151,7 @@ export default new Vuex.Store({
               rich: {
                 a: {
                   color: "#999",
-                  lineHeight: 22,
+                  lineHeight: 15,
                   align: "center"
                 },
                 // abg: {
@@ -166,7 +168,7 @@ export default new Vuex.Store({
                   height: 0
                 },
                 b: {
-                  fontSize: 16,
+                  fontSize: 12,
                   lineHeight: 33
                 },
                 per: {
