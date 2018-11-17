@@ -14,9 +14,24 @@ export default new Router({
       component: () => import("./views/HomePage.vue")
     },
     {
+      path: "/tagsmanagement",
+      name: "TagsManagement",
+      component: () => import("./views/DocCenter/TagsManagement.vue")
+    },
+    {
       path: "/dashboard",
       name: "Dashboard",
       component: () => import("./views/Dashboard/HomeDashBoard.vue")
+    },
+    {
+      path: "/doccenter",
+      name: "DocCenter",
+      component: () => import("./views/DocCenter/DocCenter.vue")
+    },
+    {
+      path: "/docinput",
+      name: "DocumentInput",
+      component: () => import("./views/DocCenter/DocumentInput.vue")
     },
     {
       path: "/aualityinput",

@@ -8,6 +8,121 @@ export default new Vuex.Store({
     user: {
       isLoggedIn: false
     },
+    doc: {
+      data: {
+        navagators: [
+          {
+            text: "业务模块",
+            value: [
+              "采购/供应链战略",
+              "业务模式",
+              "组织/岗位职责/人员能力评估",
+              "绩效设计",
+              "品类分类/主数据分类/物料编码",
+              "采购需求管理/物资标准化",
+              "品类采购策略",
+              "成本工程管理",
+              "市场情报分析",
+              "供应商选择管理（招投标,竞谈等）",
+              "合同管理",
+              "供应商管理",
+              "质量管理",
+              "采购执行管理",
+              "业务控制/审计管理",
+              "需求计划管理/S&OP",
+              "库存/仓储规划与管理",
+              "物流规划与管理",
+              "生产管理/工程管理/精益制造",
+              "智慧供应链",
+              "智能工厂",
+              "其他",
+              "Newtag"
+            ]
+          },
+          {
+            text: "项目类型",
+            value: [
+              "现状诊断",
+              "高阶规划设计",
+              "详细业务方案设计/优化",
+              "流程/作业指导/表单设计",
+              "业务落地实施",
+              "系统项目(规划/实施)",
+              "外包管理",
+              "其他"
+            ]
+          },
+          {
+            text: "材料类型",
+            value: [
+              "training/knowledge",
+              "IBM相关能力介绍",
+              "方案建议书",
+              "启动会材料",
+              "过程文件",
+              "交付件",
+              "汇报材料",
+              "Client Visit",
+              "Event",
+              "其他"
+            ]
+          },
+          {
+            text: "方法论",
+            value: ["BLM", "Maturity Assessment", "TOM", "CBM", "APQC/EPF", "Design Thinking", "Benchmarking", "其他"]
+          },
+          {
+            text: "行业",
+            value: [
+              "Telecommunications（COMMS）",
+              "Energy & Utility（E&U）",
+              "Media & Entertainment（M&E）",
+              "Public（Pub）",
+              "Retail & CPG",
+              "Travel & Transportation（T&T)",
+              "Electronics （E&E）",
+              "Industrial Product（IP）",
+              "Automotive（Auto)",
+              "Real Estate(RESO)",
+              "Huawei",
+              "CRC（华润）",
+              "Financial & Stock Service (FSS)",
+              "其他"
+            ]
+          }
+        ],
+        documentList: [
+          {
+            date: "2018-06-26",
+            docName: "SGM_间接采购业务交流_20141121v1.1 .ppt",
+            author: "Joyce Wu",
+            GUID: "711fa2bf-304c-4829-9567-84538dc0d92b",
+            url:
+              "https://w3-connections.ibm.com/wikis/form/anonymous/api/wiki/2d83c793-25b4-467b-9784-60067dc207b8/page/a1e06986-366c-4762-80d1-375b73442cd8/attachment/e6be9d54-caaf-4c18-a8be-51512888d141/media/SGM_间接采购业务交流_20141121v1.1%20.ppt",
+            tags: {
+              业务模块: {
+                text: "业务模块",
+                value: ["采购/供应链战略", "业务模式"]
+              }
+            }
+          },
+          {
+            date: "2018-06-12",
+            docName: "SGM_间接采购业务交流_20141121v1.1 .ppt",
+            author: "kpzhang@cn.ibm.com",
+            GUID: "af55a5d8-690c-4318-9c76-b5c7b09c8508",
+            url:
+              "https://w3-connections.ibm.com/wikis/form/anonymous/api/wiki/2d83c793-25b4-467b-9784-60067dc207b8/page/a1e06986-366c-4762-80d1-375b73442cd8/attachment/e6be9d54-caaf-4c18-a8be-51512888d141/media/SGM_间接采购业务交流_20141121v1.1%20.ppt",
+            tags: {
+              项目类型: {
+                text: "项目类型",
+                value: ["高阶规划设计", "详细业务方案设计/优化"]
+              }
+            }
+          }
+        ]
+      }
+    },
     qualityData: [],
     procOrders: [
       { value: "proc0001", text: "proc0001" },
@@ -203,6 +318,11 @@ export default new Vuex.Store({
       for (let obj of payload) {
         state[obj.key] = obj.value;
       }
+    },
+    updateDocList(state, docList) {
+      console.log(docList);
+      state.doc.data.documentList.push(...docList);
+      console.log(state.doc);
     }
   },
   actions: {}

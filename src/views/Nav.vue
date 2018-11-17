@@ -9,7 +9,8 @@
             <li v-if="showMenu" class="colorGray"  >采购管理</li>
             <li v-if="showMenu" class="cursorhand" @click="toDashboard" >质量管理</li>
             <li v-if="showMenu" class="colorGray"  >供应商管理</li>
-            <li v-if="showMenu" class="colorGray"  >需求计划管理</li>
+            <li v-if="showMenu" class="colorGray"  >需求计划</li>
+            <li v-if="showMenu" class="cursorhand"  @click="docCenter" >文档中心</li>
             <li v-if="!showMenu" class="cursorhand"  @click="showLogin">用户登陆</li>
             <li v-if="showMenu" class="cursorhand" @click="logou" >退出</li>
         </ul>
@@ -29,6 +30,9 @@ export default {
     }
   },
   methods: {
+    docCenter() {
+      this.$router.push("/doccenter");
+    },
     toDashboard() {
       this.$router.push("/dashboard");
     },
@@ -88,12 +92,13 @@ div.menu ul {
   align-items: center;
   height: 100%;
   margin: 0;
-  margin-right: 50px;
-  margin-left: 50px;
+  margin-right: 20px;
+  margin-left: 20px;
 }
 div.menu ul li {
-  margin-left: 20px;
-  margin-right: 20px;
+  margin-left: 10px;
+  margin-right: 10px;
+  font-size: 14px;
 }
 </style>
 

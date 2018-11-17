@@ -18,3 +18,23 @@ body {
   width: 100%;
   height: calc(100vh - 70px);
 }
+
+.removeMarginLeftRigth {
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
+.removeMarginLeft {
+  margin-left: 0 !important;
+}
+.removeMarginRigth {
+  margin-right: 0 !important;
+}
+.contentAlignRight {
+  text-align: right;
+}
+.contentAlignLeft {
+  text-align: left;
+}
+.contentAlignCenter {
+  text-align: center;
+}
