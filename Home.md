@@ -4,8 +4,7 @@
 
 ## 模块示意图
 
-<img src="./images/architecture.png
-" width="80%" style="border-radius:10px;margin-top:20px;margin-bottom:20px;">
+<img src="./images/architecture.png" width="80%" style="border-radius:10px;margin-top:20px;margin-bottom:20px;">
 
 
 ## 一. 权限管理模块（必选）
